@@ -1,15 +1,14 @@
 {% extends 'base.html' %} 
 {% block content %}
-  {% if object %}
-    <h1>Edit <span class="teal-text">{{object.name}}</span></h1>
-  {% else %}
-    <h1>Add Item</h1>
-  {% endif %}
+
+<h1>Add Item</h1>
+<div>
 <form action="" method="post">
-  {% csrf_token %}
-  <table>
-    {{ form.as_table }}
-  </table><br/>
-  <input type="submit" value="Submit!" class="btn blue lighten-2" />
-</form><br/>
+  {% csrf_token %} <div>Add item:<br> {{form.food_name}} <div>{{form.shareable}}
+  <span>{{form.shareable.label}}</span></div>
+
+  <input type="submit" value="Submit!" class="btn " />
+</form>
+</div>
+<br />
 {% endblock %}

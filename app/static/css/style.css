@@ -4,18 +4,13 @@
     font-family: 'Koulen', cursive;
 }
 
-#id_username { 
+#id_username, #id_count, #id_food_name, #id_password { 
     border: 1px solid black;
     width: 343px;
     height: 41px;
     border-radius: 20px;
-}
-
-#id_password{ 
-    border: 1px solid black;
-    width: 343px;
-    height: 41px;
-    border-radius: 20px;
+    padding-left: 15px;
+    margin: 5px 0;
 }
 
 .btn {
@@ -26,6 +21,7 @@
     color: black;
     border: 1px solid black;
     font-weight: bold;
+    margin: 5px 0;
 }
 
 #logo {
