@@ -1,16 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load widget_tweaks %}
+
 
 {% if object %}
-<h1>Edit <span>{{ object.name }}</span></h1>
+<div class ='justify-center flex-col mx-2' >
+
+
+<div class="text-center"><h1>Edit <span>{{ object.name }}</span></h1>
+</div>
 {% else %}
-<h1>Create New Household</h1>
+<h1 class="text-center font-bold mb-5" >Create New Household</h1>
 {% endif %}
 
 <form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit Changes!" id="">
+    <div class="flex justify-center" >   {% render_field form.name placeholder="Name" %} </div>
+    <!-- {{ form.as_p }} -->
+   <div class="flex justify-center " > <input type="submit" value="Submit Changes!" class= "btn mt-10" cid="">
+   </div>
 </form>
-
+</div>
 {% endblock %}
