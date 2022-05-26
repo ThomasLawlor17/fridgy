@@ -16,28 +16,34 @@
 
     <h4 class="mt-8 font-bold">People in the household:</h4>
     <ul>
-        {% for profile in users_in_house %}
-        <li>
-            <div class="flex items-center">
-                
-                <div class="px-2">
-                    {{ profile.user.username }}
-                    {% if profile.user.first_name  %}
-                    - {{ profile.user.first_name }} {{ profile.user.last_name }}
-                    {% endif %}
-                </div> 
-                {% if request.user.profile.household_manager %}
-                    <form action="{% url 'household_remove_user' household.id %}" method="POST">
-                    {% csrf_token %}
-                    <select name="user" style="display: none;"><option value="{{ profile.user }}"></option></select>
-                    <button  class="tiny-delete-btn px-2 my-4">Remove</button></form>
-                {% endif %}
-            </div>
-        
-    {% endfor %}
+        {% for profile in users_in_house %}  
+
+<div class="rectangle-input px-5 flex mt-3 justify-between rounded items-center " >
+    <div class="flex items-center">
+        <div class="mr-5">
+            <img class="foodbox-avatar rounded-full " src='{{profile.user_image}}'>
+        </div>
+        <div>
+            <a href="{% url 'profile_detail' user.id %}">
+            <p class="text-xl">{{ profile.user.username }}</p>
+            </a>
+        </div>
+    </div>
+    {% if user.profile.household_manager %}
+    <form action="{% url 'household_remove_user' household.id %}" method="POST">
+        {% csrf_token %}
+        <select name="user" style="display: none;"><option value="{{ profile.user }}"></option></select>
+        <button  class=""><img class="trash" src="/../../static/img/trash.svg"></button></form>
+   
+    {% endif %}
+</div>
+
+{% endfor %}
 
     {% if request.user.profile.household_manager %}
-    <form action="{% url 'household_delete' household.id %}"><button class="delete-btn mt-7">Delete Household</button></form>
+    <div class="text-center mb-10">
+        <form action="{% url 'household_delete' household.id %}"><button class="delete-btn mt-7">Delete Household</button></form>
+    </div>
     {% endif %}
 
 </div>

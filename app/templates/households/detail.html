@@ -19,20 +19,22 @@
             </a>
         </div>
     </div>
-        
-<a class="" href="">
-    <img class="h-10" src="../../static/img/trash.png">
-    </a>
-
+    {% if user.profile.household_manager %}
+    <form action="{% url 'household_remove_user' household.id %}" method="POST">
+        {% csrf_token %}
+        <select name="user" style="display: none;"><option value="{{ profile.user }}"></option></select>
+        <button  class=""><img class="h-10" src="../../static/img/trash.svg"></button></form>
+   
+    {% endif %}
 </div>
 
 {% endfor %}
 
-
-        <a href="{% url 'household_update' user.id %}">
-            <button class=" btn my-4">Add User</button>
+{% if user.profile.household_manager %}
+        <a href="{% url 'household_update' household.id %}">
+            <button class=" btn my-4">Edit Household</button>
         </a>
-
+{% endif %}
         <a href="{%url 'index' %}">
             <button class=" white-btn ">Food List</button>
         </a>
