@@ -92,7 +92,7 @@
         </div>
         <div class="food-list">  
             {% for food in foods %}
-            {% if not food.shareable %}
+            {% if not food.shareable and food.user != request.user %}
             <div class="food-box food-box-off-limits flex-col flex  items-center">
  
                 <div class="flex w-full justify-between items-center">
