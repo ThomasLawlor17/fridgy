@@ -4,6 +4,8 @@
     <h1 class="text-xl mb-5">{{ household.name }}</h1>
 
     <h4 class="mb-3 font-bold">Add new people:</h4>
+
+    {% if users_not_in_house %}
     <form action="{% url 'household_update' household.id %}" method="POST">
         {% csrf_token %}
         <select name="user">
@@ -13,7 +15,9 @@
         </select>
         <input type="submit" class="px-2 mx-2 tiny-submit-btn" name="" id="">
     </form>
-
+    {% else %}
+    No free users to add!
+    {% endif %}
     <h4 class="mt-8 font-bold">People in the household:</h4>
     <ul>
         {% for profile in users_in_house %}  
