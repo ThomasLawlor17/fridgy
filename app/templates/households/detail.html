@@ -15,7 +15,7 @@
         </div>
         <div>
 
-            <a href="/profile/{{p.user.id}}/">
+            <a href="{% url 'profile_detail' p.user.id %}">
             <p class="text-xl">{{ p.user.username }}</p>
             </a>
         </div>

@@ -28,7 +28,7 @@
             <img class="foodbox-avatar rounded-full " src='{{profile.user_image}}'>
         </div>
         <div>
-            <a href="{% url 'profile_detail' user.id %}">
+            <a href="{% url 'profile_detail' profile.user.id %}">
             <p class="text-xl">{{ profile.user.username }}</p>
             </a>
         </div>
