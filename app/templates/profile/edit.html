@@ -36,7 +36,7 @@
     </div>
     <div class="flex justify-between items-center mb-5">
         <div>User Image</div>
-        <div>{% render_field update_profile_form.user_image class+="profile-input-box" %}</div>
+        <input type="text" name="user_image" class="profile-input-box" value="{{profile.user_image}}">
       
     </div>
     <div class="flex justify-center">

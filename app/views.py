@@ -216,6 +216,7 @@ def profile_update(request, user_id):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         user_image = request.POST['user_image']
+        print(user_image)
         myuser = User.objects.get(pk=user_id)
         myuser.username = username
         myuser.email = email
