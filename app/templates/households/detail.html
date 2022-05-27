@@ -8,10 +8,10 @@
 
 {% for profile in users_in_house %}  
 
-<div class="food-box flex justify-between border border-neutral-800 rounded shadow-lg items-center " >
+<div class="rectangle-input px-5 flex mt-3 justify-between rounded items-center " >
     <div class="flex items-center">
         <div class="mr-5">
-            <img class="h-14 rounded-full " src='{{profile.user_image}}'>
+            <img class="foodbox-avatar rounded-full " src='{{profile.user_image}}'>
         </div>
         <div>
             <a href="{% url 'profile_detail' user.id %}">
@@ -23,7 +23,7 @@
     <form action="{% url 'household_remove_user' household.id %}" method="POST">
         {% csrf_token %}
         <select name="user" style="display: none;"><option value="{{ profile.user }}"></option></select>
-        <button  class=""><img class="h-10" src="../../static/img/trash.svg"></button></form>
+        <button  class=""><img class="trash" src="/../../static/img/trash.svg"></button></form>
    
     {% endif %}
 </div>
