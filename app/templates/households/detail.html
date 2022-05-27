@@ -6,23 +6,24 @@
 
 <div class="flex flex-col items-center justify-center ">
 
-{% for profile in users_in_house %}  
+{% for p in users_in_house %}  
 
 <div class="rectangle-input px-5 flex mt-3 justify-between rounded items-center " >
     <div class="flex items-center">
         <div class="mr-5">
-            <img class="foodbox-avatar rounded-full " src='{{profile.user_image}}'>
+            <img class="foodbox-avatar rounded-full " src='{{p.user_image}}'>
         </div>
         <div>
-            <a href="{% url 'profile_detail' user.id %}">
-            <p class="text-xl">{{ profile.user.username }}</p>
+
+            <a href="/profile/{{p.user.id}}/">
+            <p class="text-xl">{{ p.user.username }}</p>
             </a>
         </div>
     </div>
-    {% if user.profile.household_manager %}
+    {% if user.profile.household_manager and request.user != p.user %}
     <form action="{% url 'household_remove_user' household.id %}" method="POST">
         {% csrf_token %}
-        <select name="user" style="display: none;"><option value="{{ profile.user }}"></option></select>
+        <select name="user" style="display: none;"><option value="{{ p.user }}"></option></select>
         <button  class=""><img class="trash" src="/../../static/img/trash.svg"></button></form>
    
     {% endif %}
@@ -30,11 +31,9 @@
 
 {% endfor %}
 
-{% if user.profile.household_manager %}
         <a href="{% url 'household_update' household.id %}">
             <button class=" btn my-4">Edit Household</button>
         </a>
-{% endif %}
         <a href="{%url 'index' %}">
             <button class=" white-btn ">Food List</button>
         </a>
