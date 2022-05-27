@@ -6,68 +6,47 @@
 * [Technologies Used](#technologies-used)
 * [Features](#features)
 * [Screenshots](#screenshots)
-* [Usage](#usage)
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
 * [Collaborators](#collaborators)
 
 
 ## General Information
-- general information about the project here.
-- What problem does it (intend to) solve?
-- What is the purpose of the project?
-- Why did we choose this project?
+Fridgy is made to help simplify tracking your food items and avoid any confusing labeling. It is perfect for various settings, including busy family homes, communal office spaces, and shared domestic spaces. It allows users a way to quickly notify those around them about the 'share-ability' of their food.
 
 
 ## Technologies Used
-- Tech 1 
-- Tech 2 
-- Tech 3 
+* Django Web Framework
+* Django Widget Tweaks
+* Tailwind CSS
+* HTML
+* Python
+* CSS
+* Heroku
 
 
 ## Features
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+* Ability to create a profile
+* Ability to add pictures of food item
+* Ability to add different users to their household
+* Ability to add, edit, and delete profile and food
 
 
 ## Screenshots
-picture
-picture
-picture
-picture
-
-
-## Usage
-How does one go about using it?
-
-code examples here?
-
-`write-your-code-here`
+![image](https://user-images.githubusercontent.com/98067630/170717329-ea53764e-9ca6-4a6e-92c8-a90d4a0eaa1c.png)
+![image](https://user-images.githubusercontent.com/98067630/170717410-062932eb-3eaf-4659-ad5b-c3a234ccd3ea.png)
+![image](https://user-images.githubusercontent.com/98067630/170717267-c13680e2-78a5-490d-a165-2df9ec2414f9.png)
 
 
 ## Project Status
-Project is: in progress / complete / no longer being worked on. 
-
+Project is: in progress
 
 ## Room for Improvement
-Include areas we believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
 To do:
-- Feature to be added 1
-- Feature to be added 2
-
-
-## Acknowledgements
-Giving credit here.
-- This project was inspired by...
-
-- Many thanks to..
+* Feature to share costs from shopping trips
+* Barcode Scanning for Food Items
+* Feature to send invites to join a household
+* Add AWS (Amazon Web Services) cloud platform
 
 
 ## Collaborators
