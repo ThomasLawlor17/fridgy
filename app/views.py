@@ -1,6 +1,4 @@
-from distutils.log import error
-import re
-import django
+
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -12,34 +10,43 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from urllib3 import HTTPResponse
 
 from .models import Food, Household, Profile
 from .forms import GroupCreationForm, UpdateUserForm, UpdateProfileForm, FoodUpdateForm
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    if request.user:
+        return redirect('index')
+    else:
+        return redirect('login')
 
 # Food functions
-# @login_required
+@login_required
 def foods_index(request):
-    household = Household.objects.get(id=request.user.profile.household.id)
-    in_household = Profile.objects.filter(household=household).values_list('user')
-    users = User.objects.filter(id__in = in_household)
-    foods = Food.objects.filter(user__in=users)
-    for food in foods:
-        profile = Profile.objects.get(user=food.user)
-        food.user_image = profile.user_image
-    return render(request, 'foods/index.html', {'foods': foods})
-# @login_required
+    if request.user.profile.household:
+        household = Household.objects.get(id=request.user.profile.household.id)
+        in_household = Profile.objects.filter(household=household).values_list('user')
+        users = User.objects.filter(id__in = in_household)
+        foods = Food.objects.filter(user__in=users)
+        for food in foods:
+            profile = Profile.objects.get(user=food.user)
+            food.user_image = profile.user_image
+        return render(request, 'foods/index.html', {'foods': foods})
+    else:
+        return redirect('household_create')
+@login_required
 def foods_detail(request, food_id):
-    food = Food.objects.get(id=food_id)
-    return render(request, 'foods/detail.html', { 'food': food })
+    if request.user.profile.household:
+        food = Food.objects.get(id=food_id)
+        return render(request, 'foods/detail.html', { 'food': food })
+    else:
+        return redirect('household_create')
 def foods_edit(request, food_id):
     error_message = ''
-    if request.method == 'POST':
-        food = Food.objects.get(id=food_id)
+    food = Food.objects.get(id=food_id)
+    food_user = food.user
+    if request.method == 'POST' and request.user == food_user:
         food_image = request.POST['food_image']
         shareable = request.POST.get('shareable', False)
         count = request.POST['count']
@@ -49,12 +56,11 @@ def foods_edit(request, food_id):
         food.save()
         return redirect('/foods/')
     form = FoodUpdateForm()
-    food = Food.objects.get(id=food_id)
     context = { 'form': form, 'error_message': error_message, 'food':food }
     return render(request, 'foods/edit.html', context)
 # Food Class-based views
 
-class FoodCreate(CreateView): # Add login mixin
+class FoodCreate(CreateView, LoginRequiredMixin): # Add login mixin
     def check(self):
         print(self.request)
     model = Food
@@ -71,7 +77,7 @@ class FoodCreate(CreateView): # Add login mixin
 #     def form_valid(self, form):
 #         food = form.save()
 #         return redirect('/foods/')
-class FoodDelete(DeleteView): # Add login mixin
+class FoodDelete(DeleteView, LoginRequiredMixin): # Add login mixin
     model = Food
     success_url = '/foods/' # Go back to all
 
@@ -81,11 +87,14 @@ class FoodDelete(DeleteView): # Add login mixin
 
 
 
-# @login_required
+@login_required
 def household_index(request):
-    household = Household.objects.all()
-    return render(request, 'households/index.html', {'household': household})
-# @login_required
+    if request.user.is_superuser:
+        household = Household.objects.all()
+        return render(request, 'households/index.html', {'household': household})
+    else:
+        return redirect('index')
+@login_required
 def household_detail(request, household_id):
     error_message = ''
     if request.user.profile.household == Household.objects.get(id=household_id):
@@ -94,7 +103,8 @@ def household_detail(request, household_id):
         return render(request, 'households/detail.html', { 'household': household, 'users_in_house': users_in_house })
     else:
         error_message = 'You are not in this household'
-        return redirect('home') # Change later?
+        return redirect('index')
+@login_required
 def household_edit(request, household_id):
     error_message = ''
     if request.user.profile.household == Household.objects.get(id=household_id):
@@ -104,7 +114,8 @@ def household_edit(request, household_id):
         return render(request, 'households/edit.html', {'household': household, 'users_in_house': users_in_house, 'users_not_in_house': users_not_in_house})
     else:
         error_message = 'You are not in this household'
-        return redirect('home') # Change later?
+        return redirect('index')
+@login_required
 def household_update(request, household_id):
     error_message = ''
     if request.method == 'POST':
@@ -116,6 +127,7 @@ def household_update(request, household_id):
     else:
         error_message = 'Something went wrong - please try again'
     return redirect('household_edit', household_id=household_id)
+@login_required
 def household_remove_user(request, household_id):
     error_message = ''
     if request.user.profile.household == Household.objects.get(id=household_id):
@@ -135,7 +147,7 @@ def household_remove_user(request, household_id):
 
 # Household class-based views
 
-class HouseholdCreate(CreateView): # Add login mixin
+class HouseholdCreate(CreateView, LoginRequiredMixin):
     model = Household
     fields = ['name']
 
@@ -148,7 +160,7 @@ class HouseholdCreate(CreateView): # Add login mixin
         household.save()
         user.profile.save()
         return redirect(f'/household/{household.pk}/')
-class HouseholdDelete(DeleteView): # Add login mixin
+class HouseholdDelete(DeleteView, LoginRequiredMixin):
     model = Household
     def remove_manager(self):
         profile = self.request.user
@@ -180,19 +192,23 @@ def login_success(request):
         return redirect('index')
     else:
         return redirect('household_create')
-# @login_required
+@login_required
 def profile_detail(request, user_id):
+    print(request.body)
     profile = Profile.objects.get(user=user_id)
     user = User.objects.get(id=user_id)
     return render(request, 'profile/detail.html', {'profile': profile, 'user': user})
-# @login_required
+@login_required
 def profile_edit(request, user_id):
     profile = Profile.objects.get(user=user_id)
     user = User.objects.get(id=user_id)
-    update_user_form = UpdateUserForm()
-    update_profile_form = UpdateProfileForm
-    return render(request, 'profile/edit.html', {'user': user, 'profile': profile, 'update_user_form': update_user_form, 'update_profile_form': update_profile_form})
-# @login_required
+    if request.user == user:
+        update_user_form = UpdateUserForm()
+        update_profile_form = UpdateProfileForm
+        return render(request, 'profile/edit.html', {'user': user, 'profile': profile, 'update_user_form': update_user_form, 'update_profile_form': update_profile_form})
+    else:
+        return redirect('index')
+@login_required
 def profile_update(request, user_id):
     if request.method == 'POST':
         username = request.POST['username']
@@ -225,7 +241,7 @@ def change_password_done(request):
             print(form.is_valid())
             print("ERROR: ", form.errors)
             return render(request, 'registration/change_password.html', {'form': form})
-
+@login_required
 def group_create(request):
     error_message = ''
     if request.method == 'POST':
@@ -239,13 +255,14 @@ def group_create(request):
     form = GroupCreationForm()
     context = {'form': form, 'error_messsage': error_message}
     return render(request, 'group/create.html', context)
+@login_required
 def group_detail(request, group_id):
     group = Group.objects.get(id=group_id)
     users = list(group.user_set.values_list('username', flat=True))
     user = User.objects.get(id=request.user.id)
     return render(request, 'group/detail.html', {'user': user, 'group': group, 'users': users})
 # Class Views
-class ProfileDelete(DeleteView): # Add login mixin
+class ProfileDelete(DeleteView, LoginRequiredMixin): # Add login mixin
     model = User
     success_url = '/'
     

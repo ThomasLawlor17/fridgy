@@ -29,7 +29,7 @@
             </a>
         </div>
     </div>
-    {% if user.profile.household_manager %}
+    {% if user.profile.household_manager and request.user != profile.user %}
     <form action="{% url 'household_remove_user' household.id %}" method="POST">
         {% csrf_token %}
         <select name="user" style="display: none;"><option value="{{ profile.user }}"></option></select>

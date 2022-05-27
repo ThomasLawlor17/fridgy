@@ -8,6 +8,7 @@
     <title>Fridgy</title>
     {% tailwind_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="https://i.imgur.com/0bgm4Qz.png">
 
 </head>
 <body>
@@ -15,7 +16,13 @@
         <nav class="mb-8">
             <div class="m-2 flex justify-end">
                 <div class="flex-1 ">
+                    {% if user.is_authenticated and user.profile.household %}
                     <a href="{% url 'index' %}" class="">
+                    {% elif user.is_authenticated and user.profile.household != True %}
+                    <a href="{% url 'household_create' %}" class="">
+                    {% else %}
+                    <a href="{% url 'login' %}" class="">
+                    {% endif %}
                         <div id="logo-holder" class="  logo-text text-xl">
                         <img id="logo" src="/../../static/img/fridge.png"> FRIDGY
                         </div>
