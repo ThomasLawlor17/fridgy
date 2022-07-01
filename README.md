@@ -1,5 +1,4 @@
-# Fridgy
-
+# [Fridgy](https://myfridgy.herokuapp.com/)
 
 ## Table of Contents
 * [General Info](#general-information)
