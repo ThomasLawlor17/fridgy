@@ -54,12 +54,10 @@ To do:
 - Cameron Chappel
   * UX Designer
 - Thomas Lawlor
-  * Database
+  * Software Developer, Database
 - Jamie Pantling
-  * Scrum Master
+  * Software Developer. Scrum Master
 - Somaya Siddique
-  * Documentor
+  * Software Developer, Documentor
   
-![tonton-tonton-friends](https://user-images.githubusercontent.com/98067630/169445816-fc9c948b-798f-487c-ad87-6216267f4785.gif)
-
 
