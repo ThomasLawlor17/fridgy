@@ -26,3 +26,4 @@ class FoodUpdateForm(forms.ModelForm):
     class Meta:
         model = Food
         fields = ['food_name', 'category', 'expiry', 'shareable', 'count', 'food_image']
+        
