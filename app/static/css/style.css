@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
 
+
+.container {
+    margin: auto;
+}
+
+
 .logo-text {
     font-family: 'Koulen', cursive;
 }
@@ -145,11 +151,6 @@
 hr {
     border-color: black
 }
-.food-list {
-
-    margin-bottom: 64px;
-
-}
 .food-list-container{
     font-size: 24px;
 }
@@ -203,6 +204,82 @@ hr {
     color: #c16666;
 }
 
+.food-list {
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-rows: repeat(auto 1fr);
+    gap: 15px;
+    margin: auto;
+}
+
+.food-item {
+    border: solid 3px darkgrey;
+    border-radius: 5px;
+    width: 100%;
+    height: 200px;
+    position: relative;
+    padding: 20px;
+}
 .food-img {
-    width: 250px;
+    width: 100%;
+    height: 85%;
+    object-fit: scale-down;
+    border-radius: 15px;
+}
+
+.food-owner-icon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    right: 5%;
+    top: 5%;
+    overflow: hidden;
+}
+.food-owner-icon img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+}
+.food-owner-icon.owner {
+    border: solid 2px gold;
+}
+.food-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-content .food-name {
+    font-size: 20px;
+}
+.food-icon {
+    width: 25px;
+    height: 25px;
+}
+.food-icons {
+    display: flex;
+    position: absolute;
+    right: 5%;
+}
+
+.add-food-link {
+    position: absolute;
+    bottom: 1rem;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+
+input[type='checkbox'] {
+    border-radius: 50%;
+}
+
+input[type='checkbox']:checked {
+    color: #95A2F1;
 }

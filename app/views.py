@@ -14,6 +14,13 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from .models import Food, Household, Profile
 from .forms import GroupCreationForm, UpdateUserForm, UpdateProfileForm, FoodUpdateForm
 
+# photos
+import uuid
+import boto3
+
+S3_BASE_URL = 'https://s3-cs-central-1.amazonaws.com/'
+BUCKET = 'fridgy1'
+
 # Create your views here.
 def home(request):
     if request.user:
