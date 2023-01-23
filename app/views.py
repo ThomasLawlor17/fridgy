@@ -14,11 +14,10 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from .models import Food, Household, Profile
 from .forms import GroupCreationForm, UpdateUserForm, UpdateProfileForm, FoodUpdateForm
 
-# photos
-import uuid
+# Photo upload
 import boto3
-
-S3_BASE_URL = 'https://s3-cs-central-1.amazonaws.com/'
+import uuid
+S3_BASE_URL = 'https://s3-ca-central-1.amazonaws.com/'
 BUCKET = 'fridgy1'
 
 # Create your views here.
@@ -54,11 +53,23 @@ def foods_edit(request, food_id):
     food = Food.objects.get(id=food_id)
     food_user = food.user
     if request.method == 'POST' and request.user == food_user:
-        food_image = request.POST['food_image']
+        if request.FILES.get('food_image'):
+            food_image = request.FILES.get('food_image', None)
+            s3 = boto3.client('s3')
+            key = uuid.uuid4().hex[:6] + food_image.name[food_image.name.rfind('.'):]
+            try:
+                s3.upload_fileobj(food_image, BUCKET, key)
+                url = f"{S3_BASE_URL}{BUCKET}/{key}"
+                print("URL: ", url)
+                food_image = url
+                food.food_image = food_image
+            except:
+                print("An error occurred")
+        else:
+            print("no food image upload")
         shareable = request.POST.get('shareable', False)
         count = request.POST['count']
         food.shareable = shareable
-        food.food_image = food_image
         food.count = count
         food.save()
         return redirect('/foods/')
@@ -69,11 +80,23 @@ def foods_edit(request, food_id):
 
 class FoodCreate(CreateView, LoginRequiredMixin): # Add login mixin
     def check(self):
-        print(self.request)
+        print('1',self.request)
     model = Food
-    fields = ["food_name","shareable", "food_image"]
+    fields = ["food_name","shareable", "expiry", "food_image"]
     def form_valid(self, form):
         food = form.save(commit=False)
+        if self.request.FILES['food_image']:
+            image = self.request.FILES['food_image']
+            s3 = boto3.client('s3')
+            key = uuid.uuid4().hex[:6] + image.name[image.name.rfind('.'):]
+            try:
+                s3.upload_fileobj(image, BUCKET, key)
+                url = f"{S3_BASE_URL}{BUCKET}/{key}"
+                print("URL: ", url)
+                food_image = url
+                food.food_image = food_image
+            except:
+                print("An error occurred")
         food.user = self.request.user
         food.save()
         return redirect('/foods/')
@@ -218,21 +241,30 @@ def profile_edit(request, user_id):
 @login_required
 def profile_update(request, user_id):
     if request.method == 'POST':
-        username = request.POST['username']
         email = request.POST['email']
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
-        user_image = request.POST['user_image']
-        print(user_image)
+        if request.FILES.get('user_image'):
+            user_image = request.FILES.get('user_image', None)
+            s3 = boto3.client('s3')
+            key = uuid.uuid4().hex[:6] + user_image.name[user_image.name.rfind('.'):]
+            try:
+                s3.upload_fileobj(user_image, BUCKET, key)
+                url = f"{S3_BASE_URL}{BUCKET}/{key}"
+                print("URL: ", url)
+                user_image = url
+                profile = Profile.objects.get(user=user_id)
+                profile.user_image = user_image
+                profile.save()
+            except:
+                print("An error occurred")
+        else:
+            print("no food image upload")
         myuser = User.objects.get(pk=user_id)
-        myuser.username = username
         myuser.email = email
         myuser.first_name = first_name
         myuser.last_name = last_name
-        profile = Profile.objects.get(user=user_id)
-        profile.user_image = user_image
         myuser.save()
-        profile.save()
     return redirect('profile_detail', user_id=user_id)
 
 def change_password(request):

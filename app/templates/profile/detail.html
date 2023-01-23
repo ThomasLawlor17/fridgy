@@ -4,7 +4,9 @@
 <div class="edit-profile-container mx-auto">
     <div class="max-w-s  shadow-md ">
         <div class="flex flex-col items-center pb-10">
-            <img class="mb-3 w-40 h-40 rounded-full shadow-lg" src="{{ profile.user_image }}" alt="User image"/>
+            <div class="pfp-med">
+                <img class="user-image-edit" src="{{ profile.user_image }}" alt="User image"/>
+            </div>
             <h5 class="mb-1 text-xl text-gray-900 "> {{user.username}} </h5>
             {% if user.first_name %}
             <h4 class="text-4xl">{{user.first_name}} {{user.last_name}}</h4>

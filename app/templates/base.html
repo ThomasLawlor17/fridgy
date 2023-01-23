@@ -41,7 +41,7 @@
                                     <div>
                                        <img class="trash" src="/../../static/img/household.svg">
                                     </div>
-                                    <div class="mx-1">
+                                    <div class="mx-1 household-name">
                                         {{user.profile.household}}
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@
                         </div>
                     </li>
                     <li>
-                        <a href="{% url 'profile_detail' user.id %}"><img class="foodbox-avatar mx-1 rounded-full" src='{{user.profile.user_image}}'></a>
+                        <a href="{% url 'profile_detail' user.id %}" class="pfp-small"><img class="nav-pfp" src='{{user.profile.user_image}}'></a>
                     </li>
                     <li>
                         <a class="px-2" href="{% url 'logout' %}">Log out</a>
