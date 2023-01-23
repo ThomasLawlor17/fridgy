@@ -15,7 +15,10 @@ class Food(models.Model):
         blank=True,
         null=True
         )
-    expiry = models.DateField(default=date.today() + d)
+    expiry = models.DateField(
+        blank=True,
+        null=True
+    )
     count = models.IntegerField(
         default=1,
         blank=True,

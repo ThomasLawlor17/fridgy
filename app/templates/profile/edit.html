@@ -4,12 +4,15 @@
     <h5 class="text-center font-bold mb-5">Edit Profile Information</h5>
   </div>
   <div class="w-full">
-    <form action="{% url 'profile_update' user.id %}" method="POST">
-      {% csrf_token %}<div class="flex flex-col items-between ">
-    <div class="flex justify-between items-center mb-5">
-        <div>Username:</div>
-        <div>{% render_field update_user_form.username class+="profile-input-box" value=user.username %}</div>
-    </div>
+    <form action="{% url 'profile_update' user.id %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}<div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col justify-between items-center gap-3 mb-5">
+          <div class="pfp-med">
+            <img src="{{ profile.user_image }}" alt="user-image" class="user-image-edit">
+          </div>
+          <input type="file" name="user_image" class="input-box" value="{{profile.user_image}}" id="user-image">
+          <label for="user-image" class="user-image-label">Edit picture</label>
+      </div>
     <div class="flex justify-between items-center mb-5">
         <div>First Name:</div>
         {% if user.first_name %}
@@ -33,11 +36,6 @@
         {% else %}
         <div>{% render_field update_user_form.email class+="profile-input-box" placeholder="Enter Email" %}</div>
         {% endif %}
-    </div>
-    <div class="flex justify-between items-center mb-5">
-        <div>User Image</div>
-        <input type="text" name="user_image" class="profile-input-box" value="{{profile.user_image}}">
-      
     </div>
     <div class="flex justify-center">
     <input type="submit" class="btn" name="" id="" />
