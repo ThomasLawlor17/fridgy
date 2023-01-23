@@ -6,7 +6,7 @@
   
   <div class="flex-col items-center justify-center">
     
-      <form action="{% url 'foods_edit' food.id %}" method="post">
+      <form action="{% url 'foods_edit' food.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="flex-col items-center justify-center">
           {% if food.food_image %}
@@ -16,9 +16,9 @@
           {% endif %}
           <div class="flex flex-col items-center mb-5">
             {% if food.food_image %}
-            <input class="input-box" type="text" name="food_image" value="{{food.food_image}}">
+            <input class="input-box" type="file" name="food_image" value="{{food.food_image}}">
             {% else %}
-            <div>{% render_field form.food_image class+="input-box" placeholder="Enter image url (optional)" %}</div>
+            <div>{% render_field form.food_image class+="input-box" placeholder="Enter image url (optional)" type="file" %}</div>
             {% endif %}
           </div>
           <div class="flex flex-col items-center mb-5">

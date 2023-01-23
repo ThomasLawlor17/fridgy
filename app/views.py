@@ -14,11 +14,10 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from .models import Food, Household, Profile
 from .forms import GroupCreationForm, UpdateUserForm, UpdateProfileForm, FoodUpdateForm
 
-# photos
-import uuid
+# Photo upload
 import boto3
-
-S3_BASE_URL = 'https://s3-cs-central-1.amazonaws.com/'
+import uuid
+S3_BASE_URL = 'https://s3-ca-central-1.amazonaws.com/'
 BUCKET = 'fridgy1'
 
 # Create your views here.
@@ -54,11 +53,27 @@ def foods_edit(request, food_id):
     food = Food.objects.get(id=food_id)
     food_user = food.user
     if request.method == 'POST' and request.user == food_user:
-        food_image = request.POST['food_image']
+        print("1?")
+        if request.FILES.get('food_image'):
+            print("2?")
+            food_image = request.FILES.get('food_image', None)
+            s3 = boto3.client('s3')
+            key = uuid.uuid4().hex[:6] + food_image.name[food_image.name.rfind('.'):]
+            try:
+                s3.upload_fileobj(food_image, BUCKET, key)
+                url = f"{S3_BASE_URL}{BUCKET}/{key}"
+                print("URL: ", url)
+                food_image = url
+            except:
+                print("An error occurred")
+        else:
+            food_image = request.POST['food_image']
+        print(food_image)
         shareable = request.POST.get('shareable', False)
         count = request.POST['count']
         food.shareable = shareable
         food.food_image = food_image
+        print("IMAGE URL: ", food_image)
         food.count = count
         food.save()
         return redirect('/foods/')
