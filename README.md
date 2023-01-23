@@ -29,6 +29,7 @@ Fridgy is made to help simplify tracking your food items and avoid any confusing
 * Ability to add pictures of food item
 * Ability to add different users to their household
 * Ability to add, edit, and delete profile and food
+* Ability to upload images of food items and change profile picture
 
 
 ## Screenshots
@@ -45,7 +46,6 @@ To do:
 * Feature to share costs from shopping trips
 * Barcode Scanning for Food Items
 * Feature to send invites to join a household
-* Add AWS (Amazon Web Services) cloud platform
 
 
 ## Collaborators
